@@ -1,0 +1,22 @@
+{
+  "name": "generator-infusion",
+  "version": "0.1.0",
+  "description": "Yeoman generator for Infusion projects.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "files": [
+    "generators"
+  ],
+  "keywords": [
+    "yeoman-generator",
+    "infusion"
+  ],
+  "author": "",
+  "license": "(BSD-3-Clause OR ECL-2.0)",
+  "dependencies": {
+    "validate-npm-package-name": "^3.0.0",
+    "yeoman-generator": "^1.1.1"
+  }
+}
