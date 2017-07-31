@@ -1,5 +1,8 @@
+
 var Generator = require("yeoman-generator");
 var validatePackageName = require("validate-npm-package-name");
+var snakeCase = require("lodash").snakeCase;
+var camelCase = require("lodash").camelCase;
 
 module.exports = class extends Generator {
     // The name `constructor` is important here
@@ -8,7 +11,6 @@ module.exports = class extends Generator {
         super(args, opts);
 
     // Next, add your custom code
-        // this.option('babel'); // This method adds support for a `--babel` flag
         this.promptAnswers = {};
     }
 
@@ -52,16 +54,32 @@ module.exports = class extends Generator {
     }
 
     writing() {
+        var snakecaseProjectName = snakeCase(this.promptAnswers.projectName);
+        var camelCaseProjectName = camelCase(this.promptAnswers.projectName);
+        this.log(snakecaseProjectName, camelCaseProjectName);
         // Copy project scaffold files
         this.fs.copyTpl(
             this.templatePath('**'),
             this.destinationPath('.'),
-            this.promptAnswers
+            Object.assign({}, this.promptAnswers, {snakecaseProjectName: snakecaseProjectName, camelCaseProjectName: camelCaseProjectName})
         );
         // Copy dotfiles
         this.fs.copy(
             this.templatePath('.*'),
             this.destinationPath('.')
+        );
+        // Rename files based on project name
+        this.fs.move(
+            this.destinationPath('tests/js/project-tests.js'),
+            this.destinationPath('tests/js/' + camelCaseProjectName + '-tests.js')
+        );
+        this.fs.move(
+            this.destinationPath('tests/html/project-Tests.html'),
+            this.destinationPath('tests/html/' + camelCaseProjectName + '-Tests.html')
+        );
+        this.fs.move(
+            this.destinationPath('src/js/project-code.js'),
+            this.destinationPath('src/js/' + camelCaseProjectName + '.js')
         );
     }
 
