@@ -1,11 +1,11 @@
-/* global fluid */
+/* global fluid, jqUnit, projectTemplate */
 
 (function ($, fluid) {
 
     "use strict";
 
     // Basic non-IoC synchronous test
-    jqUnit.test("Test message content", function() {
+    jqUnit.test("Test message content", function () {
         var projectComponent = projectTemplate.projectComponent();
         jqUnit.expect(1);
         jqUnit.assertEquals("Test message has expected content", "Hello, world", projectComponent.model.message);
@@ -15,7 +15,7 @@
     jqUnit.asyncTest("Test message content", function () {
         jqUnit.expect(1);
 
-        var projectComponent = projectTemplate.projectComponent({
+        projectTemplate.projectComponent({
             listeners: {
                 "onAnnounceComplete.testMessageContent": {
                     "this": "jqUnit",
@@ -48,7 +48,7 @@
         }]
     });
 
-    fluid.defaults("floe.tests.projectComponentTest", {
+    fluid.defaults("projectTemplate.tests.projectComponentTest", {
         gradeNames: ["fluid.test.testEnvironment"],
         components: {
             projectComponent: {
@@ -65,6 +65,6 @@
         jqUnit.assertEquals("Test message has expected content", expectedMessage, component.model.message);
     };
 
-    floe.tests.projectComponentTest();
+    projectTemplate.tests.projectComponentTest();
 
 })(jQuery, fluid);

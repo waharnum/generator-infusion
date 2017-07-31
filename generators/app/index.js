@@ -52,10 +52,16 @@ module.exports = class extends Generator {
     }
 
     writing() {
+        // Copy project scaffold files
         this.fs.copyTpl(
             this.templatePath('**'),
             this.destinationPath('.'),
             this.promptAnswers
+        );
+        // Copy dotfiles
+        this.fs.copy(
+            this.templatePath('.*'),
+            this.destinationPath('.')
         );
     }
 
