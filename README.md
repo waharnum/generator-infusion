@@ -13,4 +13,4 @@ A [Yeoman](http://yeoman.io/) generator for Infusion-based projects.
 
 Right now, this generates a basic scaffolding for front-end projects. It creates initial files in `src` and `tests` based on the supplied project name, and HTML files with Infusion linked from `node_modules`.
 
-It also configures the official linter setup (https://www.npmjs.com/package/eslint-config-fluid) and includes a sample `pre-commit` hook file that can be used to run the linter before all commits.
+It also configures the official linter setup (https://www.npmjs.com/package/eslint-config-fluid) and includes a sample `pre-commit` hook file for Git that can be used to run the linter before all commits.
