@@ -1,7 +1,7 @@
 {
   "name": "generator-infusion",
   "version": "0.1.0",
-  "description": "Yeoman generator for Infusion projects.",
+  "description": "Base Yeoman generator for Infusion projects.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

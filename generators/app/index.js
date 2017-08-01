@@ -47,6 +47,12 @@ module.exports = class extends Generator {
                 name: "projectAuthor",
                 message: "Project author",
                 default: "Fluid Project"
+            },
+            {
+                type: "confirm",
+                name: "generateClientSide",
+                message: "Generate initial client-side files?",
+                default: false
             }
         ]).then((answers) => {
             Object.assign(this.promptAnswers, answers);
@@ -54,37 +60,32 @@ module.exports = class extends Generator {
     }
 
     writing() {
-        var snakecaseProjectName = snakeCase(this.promptAnswers.projectName);
-        var camelCaseProjectName = camelCase(this.promptAnswers.projectName);
+
+        var projectName = this.promptAnswers.projectName;
+        var snakecaseProjectName = snakeCase(this.options.projectName);
+        var camelCaseProjectName = camelCase(this.options.projectName);
         this.log(snakecaseProjectName, camelCaseProjectName);
         // Copy project scaffold files
         this.fs.copyTpl(
             this.templatePath('**'),
             this.destinationPath('.'),
-            Object.assign({}, this.promptAnswers, {snakecaseProjectName: snakecaseProjectName, camelCaseProjectName: camelCaseProjectName})
+            Object.assign(this.promptAnswers, {snakecaseProjectName: snakecaseProjectName, camelCaseProjectName: camelCaseProjectName})
         );
+
         // Copy dotfiles
         this.fs.copy(
             this.templatePath('.*'),
             this.destinationPath('.')
         );
-        // Rename files based on project name
-        this.fs.move(
-            this.destinationPath('tests/js/project-tests.js'),
-            this.destinationPath('tests/js/' + camelCaseProjectName + '-tests.js')
-        );
-        this.fs.move(
-            this.destinationPath('tests/html/project-Tests.html'),
-            this.destinationPath('tests/html/' + camelCaseProjectName + '-Tests.html')
-        );
-        this.fs.move(
-            this.destinationPath('src/js/project-code.js'),
-            this.destinationPath('src/js/' + camelCaseProjectName + '.js')
-        );
+
+        if(this.promptAnswers.generateClientSide) {
+            this.composeWith(require.resolve('../client'), {
+                projectName: this.promptAnswers.projectName
+            });
+        }
     }
 
-    installingDependencies() {
+    install() {
         this.npmInstall();
     }
-
 };
