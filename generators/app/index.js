@@ -50,7 +50,7 @@ module.exports = class extends Generator {
             },
             {
                 type: "confirm",
-                name: "generateClientSide",
+                name: "generateClientSideGrade",
                 message: "Generate an initial client-side grade?",
                 default: false
             }
@@ -78,8 +78,8 @@ module.exports = class extends Generator {
             this.destinationPath('.')
         );
 
-        if(this.promptAnswers.generateClientSide) {
-            this.composeWith(require.resolve('../client'), {
+        if(this.promptAnswers.generateClientSideGrade) {
+            this.composeWith(require.resolve('../clientGrade'), {
                 projectName: this.promptAnswers.projectName
             });
         }

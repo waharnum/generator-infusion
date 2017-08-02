@@ -14,7 +14,9 @@
 
     <script>
     QUnit.testSuites("<%= projectName %> Tests", [
-        "./html/<%= gradeFilename %>-Tests.html",
+    <% testHTMLFiles.forEach(function(htmlFile) { %>
+            "./html/<%= htmlFile %>",
+    <%    }); %>
     ]);
     </script>
 </head>
