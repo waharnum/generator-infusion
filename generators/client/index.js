@@ -53,17 +53,17 @@ module.exports = class extends Generator {
             this.destinationPath('.'),
             Object.assign(this.promptAnswers, {projectName: projectName, snakecaseProjectName: snakecaseProjectName, camelCaseProjectName: camelCaseProjectName})
         );
-        // Rename files based on project name
+        // Rename grade files based on user supplied information
         this.fs.move(
-            this.destinationPath('tests/js/project-tests.js'),
-            this.destinationPath('tests/js/' + gradeFilename + '-tests.js')
+            this.destinationPath('tests/js/gradeFilenameTests.js'),
+            this.destinationPath('tests/js/' + gradeFilename + 'Tests.js')
         );
         this.fs.move(
-            this.destinationPath('tests/html/project-Tests.html'),
+            this.destinationPath('tests/html/gradeFilename-Tests.html'),
             this.destinationPath('tests/html/' + gradeFilename + '-Tests.html')
         );
         this.fs.move(
-            this.destinationPath('src/js/project-code.js'),
+            this.destinationPath('src/js/gradeFilename.js'),
             this.destinationPath('src/js/' + gradeFilename + '.js')
         );
     }
