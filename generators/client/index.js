@@ -1,8 +1,5 @@
 
 var Generator = require("yeoman-generator");
-var validatePackageName = require("validate-npm-package-name");
-var snakeCase = require("lodash").snakeCase;
-var camelCase = require("lodash").camelCase;
 
 module.exports = class extends Generator {
     // The name `constructor` is important here
@@ -44,16 +41,13 @@ module.exports = class extends Generator {
             gradeName = this.promptAnswers.gradeName,
             gradeFilename = this.promptAnswers.gradeFilename;
 
-        var snakecaseProjectName = snakeCase(this.options.projectName);
-        var camelCaseProjectName = camelCase(this.options.projectName);
-        this.log(snakecaseProjectName, camelCaseProjectName);
-        // Copy project scaffold files
+        // Copy grade scaffold files
         this.fs.copyTpl(
             this.templatePath('**'),
             this.destinationPath('.'),
-            Object.assign(this.promptAnswers, {projectName: projectName, snakecaseProjectName: snakecaseProjectName, camelCaseProjectName: camelCaseProjectName})
+            Object.assign(this.promptAnswers, {projectName: projectName})
         );
-        // Rename grade files based on user supplied information
+        // Rename the grade files based on user supplied information
         this.fs.move(
             this.destinationPath('tests/js/gradeFilenameTests.js'),
             this.destinationPath('tests/js/' + gradeFilename + 'Tests.js')
