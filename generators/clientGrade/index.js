@@ -1,4 +1,3 @@
-
 var Generator = require("yeoman-generator");
 
 module.exports = class extends Generator {
@@ -37,7 +36,9 @@ module.exports = class extends Generator {
     }
 
     writing() {
-        var projectName = this.options.projectName,
+        var packageFile = this.fs.readJSON(this.destinationPath('package.json'));
+
+        var projectName = packageFile.name || this.options.projectName,
             gradeName = this.promptAnswers.gradeName,
             gradeFilename = this.promptAnswers.gradeFilename;
 
@@ -60,6 +61,9 @@ module.exports = class extends Generator {
             this.destinationPath('src/js/gradeFilename.js'),
             this.destinationPath('src/js/' + gradeFilename + '.js')
         );
+        this.composeWith(require.resolve('../all-tests'), {
+            projectName: projectName
+        });
     }
 
 };

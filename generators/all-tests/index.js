@@ -1,5 +1,7 @@
 var Generator = require("yeoman-generator");
 var fs = require('fs');
+var path = require('path');
+var uniq = require("lodash").uniq;
 
 module.exports = class extends Generator {
     // The name `constructor` is important here
@@ -18,7 +20,21 @@ module.exports = class extends Generator {
     writing() {
         this.log("generating all-tests.html file using the files in tests/html");
         var testHTMLDir = this.destinationPath('tests/html/');
+
         var testHTMLFiles = [];
+
+        // Get list of in-memory files that match
+        this.fs.store.each(file => {
+            if(file.path.includes("tests/html/")) {
+                var fileName = path.basename(file.path);
+            console.log('matching file in mem-fs', fileName);
+                if(! fileName.includes("gradeFilename")) {
+                    testHTMLFiles.push(fileName);
+                }
+            }
+        });
+
+        // Get list of existing files that match
         fs.readdir(testHTMLDir, (err, files) => {
             if(files) {
                 this.log(files.length + " files found");
@@ -26,14 +42,14 @@ module.exports = class extends Generator {
                     testHTMLFiles.push(file);
                 });
             this.log(testHTMLFiles);
-            this.fs.copyTpl(
-                this.templatePath('**'),
-                this.destinationPath('.'),
-                {projectName: this.options.projectName, testHTMLFiles: testHTMLFiles}
-            );
             } else {
                 this.log("no files found in tests/html/");
             }
+            this.fs.copyTpl(
+                this.templatePath('**'),
+                this.destinationPath('.'),
+                {projectName: this.options.projectName, testHTMLFiles: uniq(testHTMLFiles)}
+            );
         });
 
     }
