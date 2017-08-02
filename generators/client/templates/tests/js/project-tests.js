@@ -6,7 +6,7 @@
 
     // Basic non-IoC synchronous test
     jqUnit.test("Test message content", function () {
-        var projectComponent = projectTemplate.projectComponent();
+        var projectComponent = <%= gradeName %>();
         jqUnit.expect(1);
         jqUnit.assertEquals("Test message has expected content", "Hello, world", projectComponent.model.message);
     });
@@ -15,7 +15,7 @@
     jqUnit.asyncTest("Test message content", function () {
         jqUnit.expect(1);
 
-        projectTemplate.projectComponent({
+        <%= gradeName %>({
             listeners: {
                 "onAnnounceComplete.testMessageContent": {
                     "this": "jqUnit",
@@ -33,14 +33,14 @@
 
     // Basic IoC test structure
 
-    fluid.defaults("projectTemplate.projectComponentTester", {
+    fluid.defaults("<%= gradeName %>Tester", {
         gradeNames: ["fluid.test.testCaseHolder"],
         modules: [{
-            name: "Test the project component.",
+            name: "Test the <%= gradeName %> component.",
             tests: [{
                 name: "Test message content and changes.",
                 sequence: [{
-                    listener: "projectTemplate.projectComponentTester.testMessageContent",
+                    listener: "<%= gradeName %>Tester.testMessageContent",
                     "event": "{projectComponentTest projectComponent}.events.onCreate",
                     args: ["{projectComponent}", "Hello, world"]
                 }]
@@ -52,16 +52,16 @@
         gradeNames: ["fluid.test.testEnvironment"],
         components: {
             projectComponent: {
-                type: "projectTemplate.projectComponent",
+                type: "<%= gradeName %>",
                 createOnEvent: "{projectComponentTester}.events.onTestCaseStart"
             },
             projectComponentTester: {
-                type: "projectTemplate.projectComponentTester"
+                type: "<%= gradeName %>Tester"
             }
         }
     });
 
-    projectTemplate.projectComponentTester.testMessageContent = function (component, expectedMessage) {
+    <%= gradeName %>Tester.testMessageContent = function (component, expectedMessage) {
         jqUnit.assertEquals("Test message has expected content", expectedMessage, component.model.message);
     };
 

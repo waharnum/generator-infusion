@@ -4,7 +4,7 @@
 
     "use strict";
 
-    fluid.defaults("projectTemplate.projectComponent", {
+    fluid.defaults("<%= gradeName %>", {
         gradeNames: ["fluid.modelComponent"],
         model: {
             "message": "Hello, world"

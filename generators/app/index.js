@@ -51,7 +51,7 @@ module.exports = class extends Generator {
             {
                 type: "confirm",
                 name: "generateClientSide",
-                message: "Generate initial client-side files?",
+                message: "Generate an initial client-side grade?",
                 default: false
             }
         ]).then((answers) => {

@@ -16,10 +16,34 @@ module.exports = class extends Generator {
             default: "new-project",
             desc: "Project name"
         });
+
+        this.promptAnswers = {};
+    }
+
+    prompting() {
+        return this.prompt([
+            {
+                type: "input",
+                name: "gradeName",
+                message: "Full grade name",
+                default: "infusionGenerator.newGrade"
+            },
+            {
+                type: "input",
+                name: "gradeFilename",
+                message: "Grade file name",
+                default: "newGrade"
+            },
+        ]).then((answers) => {
+            Object.assign(this.promptAnswers, answers);
+        });
     }
 
     writing() {
-        var projectName = this.options.projectName;
+        var projectName = this.options.projectName,
+            gradeName = this.promptAnswers.gradeName,
+            gradeFilename = this.promptAnswers.gradeFilename;
+
         var snakecaseProjectName = snakeCase(this.options.projectName);
         var camelCaseProjectName = camelCase(this.options.projectName);
         this.log(snakecaseProjectName, camelCaseProjectName);
@@ -27,20 +51,20 @@ module.exports = class extends Generator {
         this.fs.copyTpl(
             this.templatePath('**'),
             this.destinationPath('.'),
-            Object.assign({}, {projectName: projectName, snakecaseProjectName: snakecaseProjectName, camelCaseProjectName: camelCaseProjectName})
+            Object.assign(this.promptAnswers, {projectName: projectName, snakecaseProjectName: snakecaseProjectName, camelCaseProjectName: camelCaseProjectName})
         );
         // Rename files based on project name
         this.fs.move(
             this.destinationPath('tests/js/project-tests.js'),
-            this.destinationPath('tests/js/' + camelCaseProjectName + '-tests.js')
+            this.destinationPath('tests/js/' + gradeFilename + '-tests.js')
         );
         this.fs.move(
             this.destinationPath('tests/html/project-Tests.html'),
-            this.destinationPath('tests/html/' + camelCaseProjectName + '-Tests.html')
+            this.destinationPath('tests/html/' + gradeFilename + '-Tests.html')
         );
         this.fs.move(
             this.destinationPath('src/js/project-code.js'),
-            this.destinationPath('src/js/' + camelCaseProjectName + '.js')
+            this.destinationPath('src/js/' + gradeFilename + '.js')
         );
     }
 
